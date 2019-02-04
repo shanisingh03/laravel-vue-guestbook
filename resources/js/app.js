@@ -1,27 +1,106 @@
+// Require Bootstrap
 require('./bootstrap');
-// window.Vue = require('vue');
-var Vue = require('vue');
 
-var VueRouter = require('vue-router');
-Vue.use(VueRouter)
+// Initialize Vue
+window.Vue = require('vue');
 
+// Register Passport Component
+Vue.component(
+    'passport-clients',
+    require('./components/passport/Clients.vue').default
+);
 
+Vue.component(
+    'passport-authorized-clients',
+    require('./components/passport/AuthorizedClients.vue').default
+);
 
+Vue.component(
+    'passport-personal-access-tokens',
+    require('./components/passport/PersonalAccessTokens.vue').default
+);
+
+// Vue Laravel Form Validation
+import { Form, HasError, AlertError } from 'vform';
+
+// Use Form Through out Application
+window.Form = Form;
+
+// Laravel Form Global Components
+Vue.component(HasError.name, HasError);
+Vue.component(AlertError.name, AlertError);
+
+// Import Vue Router
+import VueRouter from 'vue-router';
+Vue.use(VueRouter);
+
+// Import Vue Progress bar
+import VueProgressBar from 'vue-progressbar'
+
+// Define Default Progress Bar
+Vue.use(VueProgressBar, {
+    color: 'rgb(143, 255, 199)',
+    failedColor: 'red',
+    height: '2px'
+  })
+
+// Import SweatAlert
+import Swal from 'sweetalert2'
+window.swal = Swal;
+
+// Register A Global Toaster
+const Toast = Swal.mixin({
+    toast: true,
+    position: 'top-end',
+    showConfirmButton: false,
+    timer: 3000
+  });
+
+// Define Globally
+  window.toast = Toast;
+
+// Register A Global Event Listner
+window.Fire = new Vue();
+
+// Import Components
+import Dashboard from './components/Dashboard';
+import Profile from './components/Profile';
+import Contacts from './components/Contacts';
+
+// Include Filters
+require('./filters');
 
 // Routes Define Here
 let routes = [
-    { path: '/dashboard', component: require('./components/Dashboard.vue') },
-    { path: '/profile', component: require('./components/Profile.vue') }
-]
+    {
+        path: '/dashboard',
+        component: Dashboard ,
+        name: 'dashboard'
+    },
+    {
+        path: '/profile',
+        component: Profile,
+        name: 'profile'
+    },
+    {
+        path: '/contacts',
+        component: Contacts,
+        name: 'contacts'
+    }
+];
 
 
 
 // Register Routes Here
 const router = new VueRouter({
+    mode: 'history',
     routes // short for `routes: routes`
 });
 
 const app = new Vue({
     el: "#app",
-    router
+    router,
+    data: {
+        AppName: 'GuestBook'
+      }
 });

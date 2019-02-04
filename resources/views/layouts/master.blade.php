@@ -47,7 +47,7 @@ This is GuestBook APP Using Laravel And Vue.
     <a href="{{route('home')}}" class="brand-link">
       <img src="{{asset('img/icon.png')}}" alt="Gustbook Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">Gustbook</span>
+      <span class="brand-text font-weight-light">@{{AppName}}</span>
     </a>
 
     <!-- Sidebar -->
@@ -68,16 +68,16 @@ This is GuestBook APP Using Laravel And Vue.
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
         <li class="nav-item">
-            <router-link to="/dashboard"  class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+            <router-link :to="{ name: 'dashboard' }"  class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt text-yellow"></i>
               <p>
                 Dashboard
               </p>
             </router-link>
         </li>
         <li class="nav-item">
-            <router-link to="/profile" class="nav-link">
-              <i class="nav-icon fas fa-user-md"></i>
+            <router-link :to="{ name: 'profile' }" class="nav-link">
+              <i class="nav-icon fas fa-user-md text-blue"></i>
               <p>
                 Profile
               </p>
@@ -85,34 +85,33 @@ This is GuestBook APP Using Laravel And Vue.
         </li>
         <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
+              <i class="nav-icon fas fa-users text-red"></i>
               <p>
-                Guests
+                Manage Contacts
                 <i class="right fa fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="fas fa-plus-circle nav-icon"></i>
-                  <p>Add Contact</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="fas fa-address-book nav-icon"></i>
+                <router-link :to="{ name: 'contacts'}" class="nav-link">
+                  <i class="fas fa-address-book nav-icon text-red"></i>
                   <p>List Contacts</p>
-                </a>
+                </router-link>
               </li>
             </ul>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-sign-out-alt"></i>
+            <a href="{{ route('logout') }}" class="nav-link" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+              <i class="nav-icon fas fa-sign-out-alt text-green"></i>
               <p>
                 Logout
               </p>
             </a>
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
         </li>
         </ul>
       </nav>
@@ -125,11 +124,10 @@ This is GuestBook APP Using Laravel And Vue.
   <div class="content-wrapper" >
    <!-- Main content -->
     <div class="content">
-      <div class="container-fluid">
-
-        <!-- Vue Router Component View -->
-        <router-view></router-view>
-      </div>
+        <!-- Router View -->
+        <router-view :user="{{ Auth::user() }}"></router-view>
+        <!-- set progressbar -->
+        <vue-progress-bar></vue-progress-bar>
     </div>
     <!-- /.content -->
   </div>
