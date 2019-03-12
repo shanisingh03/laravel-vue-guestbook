@@ -11,7 +11,7 @@ class ContactController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('Auth::api');
+        $this->middleware('auth:api');
     }
     /**
      * Display a listing of the resource.

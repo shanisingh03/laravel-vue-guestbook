@@ -1,72 +1,89 @@
 <template>
     <div class="container-fluid">
-        <div class="row mt-5">
+        <div class="row mt-5" v-if="isDataLoaded">
+          <div class="col-lg-4 col-6">
+            <!-- small card -->
+            <div class="small-box bg-info">
+              <div class="inner">
+                <h3>{{dashDataContacts.length}}</h3>
 
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box">
-              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-address-book"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Total Contacts</span>
-                <span class="info-box-number">
-                  10
-                </span>
+                <p>Total Contacts</p>
               </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-heart"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Fav Contacts</span>
-                <span class="info-box-number">5</span>
+              <div class="icon">
+                <i class="fas fa-phone-square"></i>
               </div>
-              <!-- /.info-box-content -->
+              <a href="#" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+              </a>
             </div>
-            <!-- /.info-box -->
           </div>
-          <!-- /.col -->
+          <!-- ./col -->
+          <div class="col-lg-4 col-6">
+            <!-- small card -->
+            <div class="small-box bg-success">
+              <div class="inner">
+                <h3>{{dashDataContactsFav.length}}</h3>
 
-          <!-- fix for small devices only -->
-          <div class="clearfix hidden-md-up"></div>
-
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-success elevation-1"><i class="fa fa-shopping-cart"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">Sales</span>
-                <span class="info-box-number">760</span>
+                <p>Fav Contacts</p>
               </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div>
-          <!-- /.col -->
-          <div class="col-12 col-sm-6 col-md-3">
-            <div class="info-box mb-3">
-              <span class="info-box-icon bg-warning elevation-1"><i class="fa fa-users"></i></span>
-
-              <div class="info-box-content">
-                <span class="info-box-text">New Members</span>
-                <span class="info-box-number">2,000</span>
+              <div class="icon">
+                <i class="fas fa-heart"></i>
               </div>
-              <!-- /.info-box-content -->
+              <a href="#" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+              </a>
             </div>
-            <!-- /.info-box -->
           </div>
-          <!-- /.col -->
+          <!-- ./col -->
+          <div class="col-lg-4 col-6">
+            <!-- small card -->
+            <div class="small-box bg-danger">
+              <div class="inner">
+                <h3>{{dashDataContacts.length}}</h3>
+
+                <p>Email Ids</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-at"></i>
+              </div>
+              <a href="#" class="small-box-footer">
+                More info <i class="fa fa-arrow-circle-right"></i>
+              </a>
+            </div>
+          </div>
+          <!-- ./col -->
         </div>
     </div>
 </template>
 
 <script>
     export default {
+        props : ['user'],
+        data(){
+            return {
+                isDataLoaded: false,
+                dashDataContacts:[],
+                dashDataFavContacts:[],
+            }
+        },
+        methods:{
+            // Get List Of Contacts
+            getDashData(){
+                this.$Progress.start();
+                axios.get("api/dashboard?user_id="+this.user.id).then(
+                    ({data}) =>{
+                        // this.dashData = data;
+                        this.dashDataContacts = data.contacts;
+                        this.dashDataContactsFav = data.fav_contacts;
+                        this.isDataLoaded = true;
+                        this.$Progress.finish();
+                        }
+                    );
+
+            }
+        },
         mounted() {
+            this.getDashData();
             console.log('Dashborad Component mounted.')
         }
     }

@@ -22,3 +22,7 @@ Route::apiResources([
     'user'=>'API\UserController',
     'contact'=>'API\ContactController'
 ]);
+
+Route::get('/dashboard','API\DashboardController@index');
+Route::post('/profile/update','API\UserController@updateProfile');
+Route::get('/myprofile','API\UserController@getMyProfile');

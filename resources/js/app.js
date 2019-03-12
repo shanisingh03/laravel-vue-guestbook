@@ -20,6 +20,9 @@ Vue.component(
     require('./components/passport/PersonalAccessTokens.vue').default
 );
 
+// Pagination
+Vue.component("pagination", require("laravel-vue-pagination"));
+
 // Vue Laravel Form Validation
 import { Form, HasError, AlertError } from 'vform';
 
@@ -72,6 +75,14 @@ require('./filters');
 
 // Routes Define Here
 let routes = [
+    {
+        path: '/',
+        redirect: '/dashboard'
+    },
+    {
+        path: '/home',
+        redirect: '/dashboard'
+    },
     {
         path: '/dashboard',
         component: Dashboard ,
