@@ -1902,20 +1902,83 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['user'],
+  props: ["user"],
   data: function data() {
     return {
       editMode: false,
-      contacts: [],
+      contacts: {},
       form: new Form({
-        id: '',
-        name: '',
-        mobile: '',
-        email: '',
-        is_fav: '',
-        photo: '',
-        comment: '',
+        id: "",
+        name: "",
+        mobile: "",
+        email: "",
+        is_fav: "",
+        photo: "",
+        comment: "",
         user_id: this.user.id
       })
     };
@@ -1925,38 +1988,38 @@ __webpack_require__.r(__webpack_exports__);
     openNewContactModal: function openNewContactModal() {
       this.editMode = false;
       this.form.reset();
-      $('#addNewContactModal').modal('show');
+      $("#addNewContactModal").modal("show");
     },
     //Open Edit Contact Modal
     openEditContactModal: function openEditContactModal(contact) {
       this.editMode = true; // this.form.reset();
 
       this.form.fill(contact);
-      $('#addNewContactModal').modal('show');
+      $("#addNewContactModal").modal("show");
     },
     // Create Contact
     createContact: function createContact() {
       var _this = this;
 
       this.$Progress.start();
-      this.form.post('api/contact').then(function (data) {
+      this.form.post("api/contact").then(function (data) {
         if (data.status == 201) {
           // Fire An Event To refresh Data
-          Fire.$emit('AfterCreateContact'); // Toaster Message
+          Fire.$emit("AfterCreateContact"); // Toaster Message
 
           toast.fire({
-            type: 'success',
-            title: 'Contact Created Successfully.'
+            type: "success",
+            title: "Contact Created Successfully."
           }); // Finish Progress Bar
 
           _this.$Progress.finish(); // Hide The Modal
 
 
-          $('#addNewContactModal').modal('hide');
+          $("#addNewContactModal").modal("hide");
         } else {
           toast.fire({
-            type: 'error',
-            title: 'Fail To Create Contact.'
+            type: "error",
+            title: "Fail To Create Contact."
           }); // Finish Progress Bar
 
           _this.$Progress.finish();
@@ -1967,8 +2030,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
         toast.fire({
-          type: 'error',
-          title: 'Fail To Create Contact.'
+          type: "error",
+          title: "Fail To Create Contact."
         });
       });
     },
@@ -1977,9 +2040,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.$Progress.start();
-      axios.get("api/contact?user_id=" + this.user.id).then(function (_ref) {
+      axios.get("api/contact").then(function (_ref) {
         var data = _ref.data;
-        _this2.contacts = data.data;
+        _this2.contacts = data;
 
         _this2.$Progress.finish();
       });
@@ -1989,31 +2052,31 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       swal.fire({
-        title: 'Are you sure?',
+        title: "Are you sure?",
         text: "You won't be able to revert this!",
-        type: 'warning',
+        type: "warning",
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
       }).then(function (result) {
         if (result.value) {
           // Send Delete Request To Server
-          _this3.form.delete('api/contact/' + id).then(function (data) {
+          _this3.form.delete("api/contact/" + id).then(function (data) {
             // console.log(data);
             if (data.status == 200) {
               // Fire An Event To refresh Data
-              Fire.$emit('AfterCreateContact'); // Alert
+              Fire.$emit("AfterCreateContact"); // Alert
 
-              swal.fire('Deleted!', data.data.message, 'success');
+              swal.fire("Deleted!", data.data.message, "success");
             } else {
               // Error Alert
-              swal.fire('Error!', 'Fail To Delete Contact.', 'error');
+              swal.fire("Error!", "Fail To Delete Contact.", "error");
             }
           });
         }
       }).catch(function () {
-        swal.fire('Error!', 'Something Went Wrong.', 'error');
+        swal.fire("Error!", "Something Went Wrong.", "error");
       });
     },
     // Update Contact
@@ -2021,37 +2084,61 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       this.$Progress.start();
-      this.form.put('api/contact/' + this.form.id).then(function (data) {
+      this.form.put("api/contact/" + this.form.id).then(function (data) {
         // Fire An Event To refresh Data
-        Fire.$emit('AfterCreateContact'); // Toaster Message
+        Fire.$emit("AfterCreateContact"); // Toaster Message
 
         toast.fire({
-          type: 'success',
-          title: 'Contact Updated Successfully.'
+          type: "success",
+          title: "Contact Updated Successfully."
         }); // Finish Progress Bar
 
         _this4.$Progress.finish(); // Hide The Modal
 
 
-        $('#addNewContactModal').modal('hide');
+        $("#addNewContactModal").modal("hide");
       }).catch(function () {
         toast.fire({
-          type: 'error',
-          title: 'Fail To Update Contact.'
+          type: "error",
+          title: "Fail To Update Contact."
         }); // Finish Progress Bar
 
         _this4.$Progress.finish();
       });
+    },
+    getContactPage: function getContactPage() {
+      var _this5 = this;
+
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("api/contact?page=" + page).then(function (_ref2) {
+        var data = _ref2.data;
+        _this5.contacts = data;
+
+        _this5.$Progress.finish();
+      });
     }
   },
   mounted: function mounted() {
-    var _this5 = this;
+    var _this6 = this;
 
     this.getMyContacts();
-    Fire.$on('AfterCreateContact', function () {
-      _this5.getMyContacts();
+    Fire.$on("AfterCreateContact", function () {
+      _this6.getMyContacts();
     });
-    console.log('Contact Component Success!.');
+    Fire.$on("searching", function () {
+      _this6.$Progress.start();
+
+      var query = _this6.$parent.search;
+      axios.get("/api/finduser?q=" + query).then(function (_ref3) {
+        var data = _ref3.data;
+        _this6.contacts = data;
+
+        _this6.$Progress.finish();
+      }).catch(function () {
+        _this6.$Progress.fail();
+      });
+    });
+    console.log("Contact Component Success!.");
   }
 });
 
@@ -61289,9 +61376,7 @@ var render = function() {
       _c("div", { staticClass: "col-12" }, [
         _c("div", { staticClass: "card" }, [
           _c("div", { staticClass: "card-header" }, [
-            _c("h3", { staticClass: "card-title" }, [
-              _vm._v("My Contacts(" + _vm._s(_vm.contacts.length) + ")")
-            ]),
+            _c("h3", { staticClass: "card-title" }, [_vm._v("My Contacts")]),
             _vm._v(" "),
             _c("div", { staticClass: "card-tools" }, [
               _c(
@@ -61301,7 +61386,9 @@ var render = function() {
                   on: { click: _vm.openNewContactModal }
                 },
                 [
-                  _vm._v("\n                  Add\n                  "),
+                  _vm._v(
+                    "\n                            Add\n                            "
+                  ),
                   _c("i", { staticClass: "fas fa-user-plus" })
                 ]
               )
@@ -61315,7 +61402,7 @@ var render = function() {
                 [
                   _vm._m(0),
                   _vm._v(" "),
-                  _vm._l(_vm.contacts, function(contact, index) {
+                  _vm._l(_vm.contacts.data, function(contact, index) {
                     return _c("tr", { key: contact.id }, [
                       _c("td", [_vm._v(_vm._s(index + 1))]),
                       _vm._v(" "),
@@ -61378,7 +61465,19 @@ var render = function() {
                 2
               )
             ])
-          ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "card-footer" },
+            [
+              _c("pagination", {
+                attrs: { data: _vm.contacts },
+                on: { "pagination-change-page": _vm.getContactPage }
+              })
+            ],
+            1
+          )
         ])
       ])
     ]),
@@ -61414,8 +61513,8 @@ var render = function() {
                   [
                     _vm.editMode
                       ? _c("span", [_vm._v("Edit")])
-                      : _c("span", [_vm._v(" Add New")]),
-                    _vm._v(" Contact\n            ")
+                      : _c("span", [_vm._v("Add New")]),
+                    _vm._v(" Contact\n                    ")
                   ]
                 ),
                 _vm._v(" "),
@@ -61596,7 +61695,7 @@ var render = function() {
                       "div",
                       { staticClass: "form-group" },
                       [
-                        _c("label", [_vm._v("Is Favorite ")]),
+                        _c("label", [_vm._v("Is Favorite")]),
                         _vm._v(" "),
                         _c("input", {
                           directives: [
@@ -61704,11 +61803,11 @@ var render = function() {
                         _vm.editMode
                           ? _c("span", [
                               _c("i", { staticClass: "fas fa-user-edit" }),
-                              _vm._v(" Update")
+                              _vm._v(" Update\n                            ")
                             ])
                           : _c("span", [
                               _c("i", { staticClass: "fas fa-save" }),
-                              _vm._v(" Save")
+                              _vm._v(" Save\n                            ")
                             ])
                       ]
                     )
@@ -61772,7 +61871,10 @@ var staticRenderFns = [
         staticClass: "btn btn-danger",
         attrs: { type: "button", "data-dismiss": "modal" }
       },
-      [_c("i", { staticClass: "fas fa-times" }), _vm._v(" Close")]
+      [
+        _c("i", { staticClass: "fas fa-times" }),
+        _vm._v(" Close\n                        ")
+      ]
     )
   }
 ]
@@ -77113,9 +77215,9 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // Initia
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js"); // Register Passport Component
 
-Vue.component('passport-clients', __webpack_require__(/*! ./components/passport/Clients.vue */ "./resources/js/components/passport/Clients.vue").default);
-Vue.component('passport-authorized-clients', __webpack_require__(/*! ./components/passport/AuthorizedClients.vue */ "./resources/js/components/passport/AuthorizedClients.vue").default);
-Vue.component('passport-personal-access-tokens', __webpack_require__(/*! ./components/passport/PersonalAccessTokens.vue */ "./resources/js/components/passport/PersonalAccessTokens.vue").default); // Pagination
+Vue.component("passport-clients", __webpack_require__(/*! ./components/passport/Clients.vue */ "./resources/js/components/passport/Clients.vue").default);
+Vue.component("passport-authorized-clients", __webpack_require__(/*! ./components/passport/AuthorizedClients.vue */ "./resources/js/components/passport/AuthorizedClients.vue").default);
+Vue.component("passport-personal-access-tokens", __webpack_require__(/*! ./components/passport/PersonalAccessTokens.vue */ "./resources/js/components/passport/PersonalAccessTokens.vue").default); // Pagination
 
 Vue.component("pagination", __webpack_require__(/*! laravel-vue-pagination */ "./node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js")); // Vue Laravel Form Validation
 
@@ -77132,9 +77234,9 @@ Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]); // Import Vue Progr
  // Define Default Progress Bar
 
 Vue.use(vue_progressbar__WEBPACK_IMPORTED_MODULE_2___default.a, {
-  color: 'rgb(143, 255, 199)',
-  failedColor: 'red',
-  height: '2px'
+  color: "rgb(143, 255, 199)",
+  failedColor: "red",
+  height: "2px"
 }); // Import SweatAlert
 
 
@@ -77142,14 +77244,16 @@ window.swal = sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a; // Register A 
 
 var Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.mixin({
   toast: true,
-  position: 'top-end',
+  position: "top-end",
   showConfirmButton: false,
   timer: 3000
 }); // Define Globally
 
 window.toast = Toast; // Register A Global Event Listner
 
-window.Fire = new Vue(); // Import Components
+window.Fire = new Vue(); // Register Pagination Components
+
+Vue.component("pagination", __webpack_require__(/*! laravel-vue-pagination */ "./node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js")); // Import Components
 
 
 
@@ -77159,27 +77263,27 @@ __webpack_require__(/*! ./filters */ "./resources/js/filters.js"); // Routes Def
 
 
 var routes = [{
-  path: '/',
-  redirect: '/dashboard'
+  path: "/",
+  redirect: "/dashboard"
 }, {
-  path: '/home',
-  redirect: '/dashboard'
+  path: "/home",
+  redirect: "/dashboard"
 }, {
-  path: '/dashboard',
+  path: "/dashboard",
   component: _components_Dashboard__WEBPACK_IMPORTED_MODULE_4__["default"],
-  name: 'dashboard'
+  name: "dashboard"
 }, {
-  path: '/profile',
+  path: "/profile",
   component: _components_Profile__WEBPACK_IMPORTED_MODULE_5__["default"],
-  name: 'profile'
+  name: "profile"
 }, {
-  path: '/contacts',
+  path: "/contacts",
   component: _components_Contacts__WEBPACK_IMPORTED_MODULE_6__["default"],
-  name: 'contacts'
+  name: "contacts"
 }]; // Register Routes Here
 
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
-  mode: 'history',
+  mode: "history",
   routes: routes // short for `routes: routes`
 
 });
@@ -77187,7 +77291,13 @@ var app = new Vue({
   el: "#app",
   router: router,
   data: {
-    AppName: 'GuestBook'
+    AppName: "GuestBook",
+    search: ""
+  },
+  methods: {
+    searchGlobal: function searchGlobal() {
+      Fire.$emit("searching");
+    }
   }
 });
 
